@@ -1,26 +1,28 @@
 // app.js
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const connectDB = require('./config/db');   // ← novo
+
 const app = express();
-app.use(cors()); // ✅ cors pode ser usado agora
-app.use(express.json()); // habilita JSON no body das requisições
-// Middlewares
+
+app.use(cors());
 app.use(express.json());
-// MongoDB
-mongoose.connect('mongodb+srv://envio-facil:@melhor-frete.vlfd5ne.mongodb.net/envio-facil?retryWrites=true&w=majority').then(() => console.log('Conectado ao MongoDB!'))
-.catch(err => console.error('Erro ao conectar ao MongoDB:', err));
+
+// Conexão com MongoDB (agora assíncrona)
+connectDB();
 
 // Rotas
 const authRoutes = require('./routes/authRoutes');
 const prepostagemRoutes = require('./routes/prepostagemRoutes');
+const simularFreteRoutes = require('./routes/simularFreteRoutes');
 
 app.use('/auth', authRoutes);
+app.use('/consulta', simularFreteRoutes);
 app.use('/prepostagem', prepostagemRoutes);
 
-// Rota raiz
+// Rota de saúde
 app.get('/', (req, res) => {
-  res.send('API está funcionando!');
+  res.json({ status: 'API Facility Envios rodando!', mongodb: mongoose.connection.readyState === 1 ? '✅ Conectado' : '⛔ Desconectado' });
 });
 
 module.exports = app;

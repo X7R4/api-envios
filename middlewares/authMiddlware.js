@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// Defina a chave secreta diretamente no código
 const JWT_SECRET = 'vanguardthreatseeker';
 
 const authenticateToken = (req, res, next) => {

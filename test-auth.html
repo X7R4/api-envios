@@ -1,0 +1,11 @@
+<button onclick="registrar()">Registrar</button>
+<script>
+async function registrar() {
+  const res = await fetch('http://localhost:3000/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ nome:"Teste", sobrenome:"X", email:"x@x.com", senha:"123", confirmarSenha:"123" })
+  });
+  console.log(await res.json());
+}
+</script>
